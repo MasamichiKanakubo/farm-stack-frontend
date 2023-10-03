@@ -4,55 +4,55 @@ import { useQueryClient } from 'react-query'
 import { useMutateAuth } from '../hooks/useMutateAuth'
 
 export const useProcessAuth = () => {
-    const history = useHistory()
-    const queryClient = useQueryClient()
-    const [email, setEmail] = useState('')
-    const [pw, setPw] = useState('')
-    const [islogin, setIslogin] = useState(true)
-    const { loginMutation, registerMutation, logoutMutation } = useMutateAuth()
+  const history = useHistory()
+  const queryClient = useQueryClient()
+  const [email, setEmail] = useState('')
+  const [pw, setPw] = useState('')
+  const [isLogin, setIsLogin] = useState(true)
+  const { loginMutation, registerMutation, logoutMutation } = useMutateAuth()
 
-    const processAuth = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        if (islogin) {
-            loginMutation.mutate({
-                email: email,
-                password: pw
-            })
-        } else {
-            await registerMutation.mutateAsync({
-                email: email,
-                password: pw
-            })
-            .then(() => 
-                loginMutation.mutate({
-                    email: email,
-                    password: pw
-                })
-            )
-            .catch(() => {
-                setEmail('')
-                setPw('')
-            })
-        }
+  const processAuth = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (isLogin) {
+      loginMutation.mutate({
+        email: email,
+        password: pw,
+      })
+    } else {
+      await registerMutation
+        .mutateAsync({
+          email: email,
+          password: pw,
+        })
+        .then(() =>
+          loginMutation.mutate({
+            email: email,
+            password: pw,
+          })
+        )
+        .catch(() => {
+          setPw('')
+          setEmail('')
+        })
     }
-    const logout = async () => { 
-        await logoutMutation.mutateAsync()
-        queryClient.removeQueries('tasks')
-        queryClient.removeQueries('user')
-        queryClient.removeQueries('single')
-        queryClient.clear()
-        history.push('/')
-    }
-    return {
-        email,
-        setEmail,
-        pw,
-        setPw,
-        islogin,
-        setIslogin,
-        processAuth,
-        registerMutation,
-        loginMutation,
-        logout
-    }
+  }
+  const logout = async () => {
+    await logoutMutation.mutateAsync()
+    queryClient.removeQueries('tasks')
+    queryClient.removeQueries('user')
+    queryClient.removeQueries('single')
+    history.push('/')
+  }
+  return {
+    email,
+    setEmail,
+    pw,
+    setPw,
+    isLogin,
+    setIsLogin,
+    processAuth,
+    registerMutation,
+    loginMutation,
+    logout,
+  }
 }

@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import axios from 'axios';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { CsrfToken } from './types/types';
-import { useAppSelector } from './app/hooks';
-import { selectCsrfState } from './slices/appSlice';
-import { Auth } from './components/Auth';
-import { Todo } from './components/Todo';
+import { useEffect } from 'react'
+import axios from 'axios'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { CsrfToken } from './types/types'
+import { useAppSelector } from './app/hooks'
+import { selectCsrfState } from './slices/appSlice'
+import { Auth } from './components/Auth'
+import { Todo } from './components/Todo'
 
 function App() {
   const csrf = useAppSelector(selectCsrfState)
@@ -21,10 +21,10 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path='/'>
+        <Route exact path="/">
           <Auth />
         </Route>
-        <Route exact path='/todo'>
+        <Route exact path="/todo">
           <Todo />
         </Route>
       </Switch>
@@ -32,4 +32,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
